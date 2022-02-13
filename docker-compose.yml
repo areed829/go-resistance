@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  go-api:
+    build:
+      context: ./go-api
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+  
+  resistance:
+    build:
+      context: ./resistance
+      dockerfile: ./Dockerfile
+    ports:
+      - 8081:80
+   
