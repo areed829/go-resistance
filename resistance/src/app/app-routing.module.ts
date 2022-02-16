@@ -12,6 +12,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./welcome/welcome.module').then((m) => m.WelcomeModule),
   },
+  {
+    path: 'main',
+    loadChildren: () =>
+      import('./main-screen/main-screen.module').then(
+        (m) => m.MainScreenModule
+      ),
+  },
 ];
 
 @NgModule({
