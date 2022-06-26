@@ -1,0 +1,28 @@
+<form [formGroup]="form" (ngSubmit)="join()" class="flex flex-col px-2">
+  <input
+    formControlName="name"
+    id="name"
+    placeholder="Name"
+    type="text"
+    class="w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500"
+    required
+  />
+  <div
+    *ngIf="form.invalid && (form.dirty || form.touched)"
+    class="alert alert-danger"
+  >
+    <div *ngIf="form.controls.name.errors?.['required']">Name is required.</div>
+    <div *ngIf="form.controls.name.errors?.['minlength']">
+      Name must be at least 3 characters long.
+    </div>
+    <div *ngIf="form.controls.name.errors?.['forbiddenName']">
+      Name cannot be Bob.
+    </div>
+  </div>
+  <button
+    class="bg-blue-600 text-gray-100 rounded hover:bg-blue-500 px-4 py-2 focus:outline-none"
+    type="submit"
+  >
+    Join
+  </button>
+</form>

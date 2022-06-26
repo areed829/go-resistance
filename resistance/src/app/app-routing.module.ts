@@ -19,6 +19,11 @@ const routes: Routes = [
         (m) => m.MainScreenModule
       ),
   },
+  {
+    path: 'mobile',
+    loadChildren: () =>
+      import('./mobile/mobile.module').then((m) => m.MobileModule),
+  },
 ];
 
 @NgModule({
