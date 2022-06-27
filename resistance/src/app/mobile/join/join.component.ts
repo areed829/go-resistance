@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { WebSocketService } from 'src/app/websocket.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
   templateUrl: 'join.component.html',
@@ -18,7 +13,7 @@ export class JoinComponent implements OnInit {
   constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit() {
-    this.webSocketService.messages.subscribe((message: any) => {
+    this.webSocketService.messages.subscribe((message) => {
       console.log(message);
     });
   }
@@ -28,9 +23,7 @@ export class JoinComponent implements OnInit {
   }
 
   private sendMessage(message: string) {
-    this.webSocketService.messages.next({
-      source: 'localhost',
-      content: message,
-    });
+    console.log(message);
+    this.webSocketService.sendMessage('getDoc', message);
   }
 }

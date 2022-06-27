@@ -1,10 +1,11 @@
 import express from 'express';
-import http from 'http';
+import { createServer } from 'http';
 import { Server } from 'socket.io';
 
-const app = express();
-const server = new http.Server(app);
-const io = new Server(server);
+const server = createServer(express());
+const io = new Server(server, {
+  cors: { origin: 'http://localhost:4200' },
+});
 
 const documents: any = {};
 
@@ -20,6 +21,7 @@ io.on('connection', (socket) => {
 
   socket.on('getDoc', (docId) => {
     safeJoin(docId);
+    console.log(documents[docId]);
     socket.emit('document', documents[docId]);
   });
 
