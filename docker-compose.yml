@@ -28,26 +28,3 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - 4444:4444
-
-  traefik:
-    image: "traefik:v2.6"
-    container_name: "traefik"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik-http.entrypoints=web"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.reeda`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.docker.network=web"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--api.dashboard"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.secure.address=:443"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
