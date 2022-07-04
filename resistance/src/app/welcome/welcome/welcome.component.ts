@@ -1,11 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GameService } from '../game.service';
 
 @Component({
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
 })
-export class WelcomeComponent implements OnInit {
-  constructor() {}
+export class WelcomeComponent {
+  status = this.gameService.getGameStatus().subscribe((gameStatus) => {
+    console.log(gameStatus);
+  });
+  constructor(private gameService: GameService, private router: Router) {}
 
-  ngOnInit(): void {}
+  startGame() {
+    this.gameService.startGame();
+  }
+
+  navigateToWaitingRoom() {
+    this.router.navigate(['/waiting-room']);
+  }
 }

@@ -2,11 +2,11 @@
   "name": "go-node",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "prebuild": "eslint -c .eslintrc.json --fix",
     "dev": "nodemon",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/server.ts"
   },
   "repository": {
     "type": "git",
