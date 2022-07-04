@@ -5,12 +5,12 @@ import { MainScreenComponent } from './main-screen/main-screen.component';
 import { StartGameComponent } from './start-game/start-game.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'main-screen' },
+  { path: '', redirectTo: 'main-screen', pathMatch: 'full' },
   {
     path: 'main-screen',
     component: MainScreenComponent,
     children: [
-      { path: '', redirectTo: 'start' },
+      { path: '', redirectTo: 'start', pathMatch: 'full' },
       { path: 'start', component: StartGameComponent },
     ],
   },
