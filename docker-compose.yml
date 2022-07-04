@@ -1,23 +1,10 @@
 version: "3.9"
 
 services:
-  # go-api:
-  #   build:
-  #     context: ./go-api
-  #     dockerfile: ./Dockerfile
-  #   ports:
-  #     - 8080:8080
-  
   resistance:
     build:
       context: ./resistance
       dockerfile: ./Dockerfile
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.resistance-web.rule=Host(`resistance.reeda`)"
-      - "traefik.http.routers.resistance-web.entrypoints=web"
-      - "traefik.http.routers.resistance-web.service=resistance-web-svc"
-      - "traefik.http.services.resistance-web-svc.loadbalancer.server.port=8081"
     ports:
       - 8081:80
 
