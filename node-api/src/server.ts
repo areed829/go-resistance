@@ -19,7 +19,7 @@ app.get('/game-status', (req, res) => {
 });
 
 app.get('/start-game', (req, res) => {
-  gameStatus = { status: GameStatus.InProgress };
+  gameStatus = { status: GameStatus.Open };
   res.send(gameStatus);
 });
 

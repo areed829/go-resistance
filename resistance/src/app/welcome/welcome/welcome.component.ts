@@ -7,16 +7,15 @@ import { GameService } from '../game.service';
   styleUrls: ['./welcome.component.scss'],
 })
 export class WelcomeComponent {
-  status = this.gameService.getGameStatus().subscribe((gameStatus) => {
-    console.log(gameStatus);
-  });
+  status = this.gameService.getGameStatus();
   constructor(private gameService: GameService, private router: Router) {}
 
   startGame() {
-    this.gameService.startGame();
+    this.gameService.startGame().subscribe();
+    this.navigateToWaitingRoom();
   }
 
   navigateToWaitingRoom() {
-    this.router.navigate(['/waiting-room']);
+    this.router.navigate(['main', 'waiting-room']);
   }
 }
