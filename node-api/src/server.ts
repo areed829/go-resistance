@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { GameStatus } from './game-status';
@@ -8,6 +9,8 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: { origin: 'http://localhost:4200' },
 });
+
+app.use(cors({ origin: 'http://localhost:4200' }));
 
 let gameStatus = { status: GameStatus.Closed };
 

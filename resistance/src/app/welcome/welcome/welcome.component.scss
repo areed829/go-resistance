@@ -1,8 +1,15 @@
 .resistance-pic {
-  width: 100%;
-  height: 100%;
-  background-image: url('/assets/images/resistance-for-victory.jpeg');
+  background: url('/assets/images/resistance-for-victory.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
 }
