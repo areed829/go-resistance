@@ -25,6 +25,10 @@ app.get('/start-game', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log(`Socket ${socket.id} has connected`);
+
+  socket.on('disconnect', () =>
+    console.log(`Socket ${socket.id} has disconnected`)
+  );
 });
 
 httpServer.listen(4444, () => {

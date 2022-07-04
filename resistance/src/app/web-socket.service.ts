@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, Observer, Subject } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class WebSocketService {
   private socket: Socket;
-  public messages: Observable<any>;
+  private messages: Observable<any>;
   constructor() {
     this.socket = io(environment.SOCKET_ENDPOINT);
     this.messages = new Observable((obs: Observer<any>) => {
@@ -14,6 +14,10 @@ export class WebSocketService {
       obs.error.bind(obs);
       obs.complete.bind(obs);
     });
+  }
+
+  public getMessages(): Observable<any> {
+    return this.messages;
   }
 
   public sendMessage(event: string, payload: string) {

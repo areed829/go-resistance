@@ -13,7 +13,7 @@ export class JoinComponent implements OnInit {
   constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit() {
-    this.webSocketService.messages.subscribe((message) => {
+    this.webSocketService.getMessages().subscribe((message) => {
       console.log(message);
     });
   }
