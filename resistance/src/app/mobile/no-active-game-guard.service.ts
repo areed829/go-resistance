@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {
   ActivatedRouteSnapshot,
@@ -9,10 +9,15 @@ import {
 } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { GameStatus } from '../welcome/game-status';
+import { NODE_HOST } from '../api-url';
 
 @Injectable()
 export class NoActiveGameGuardService implements CanActivate {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    @Inject(NODE_HOST) private host: string,
+    private http: HttpClient,
+    private router: Router
+  ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -22,7 +27,7 @@ export class NoActiveGameGuardService implements CanActivate {
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
     return this.http
-      .get<{ status: GameStatus }>('http://localhost:4444/game-status')
+      .get<{ status: GameStatus }>(`${this.host}/game-status`)
       .pipe(
         map(({ status }) =>
           status === GameStatus.Open

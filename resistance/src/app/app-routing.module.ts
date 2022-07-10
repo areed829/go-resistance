@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NODE_HOST } from './api-url';
 import { KillGameComponent } from './kill-game/kill-game.component';
 
 const routes: Routes = [
@@ -34,5 +35,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [{ provide: NODE_HOST, useValue: 'http://localhost:4444' }],
 })
 export class AppRoutingModule {}

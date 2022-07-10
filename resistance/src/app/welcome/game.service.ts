@@ -1,20 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GameStatus } from './game-status';
+import { NODE_HOST } from '../api-url';
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    @Inject(NODE_HOST) private host: string,
+    private httpClient: HttpClient
+  ) {}
 
   getGameStatus() {
     return this.httpClient.get<{ status: GameStatus }>(
-      'http://localhost:4444/game-status'
+      `${this.host}/game-status`
     );
   }
 
   startGame() {
     return this.httpClient.get<{ status: GameStatus }>(
-      'http://localhost:4444/start-game'
+      `${this.host}/start-game`
     );
   }
 }

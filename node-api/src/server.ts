@@ -3,6 +3,7 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { GameStatus } from './game-status';
+import { addPlayer, clearPlayers } from './player';
 
 const app = express();
 const httpServer = createServer(app);
@@ -25,8 +26,18 @@ app.post('/kill-game', (req, res) => {
 
 app.get('/start-game', (req, res) => {
   gameStatus = { status: GameStatus.Open };
+  clearPlayers();
   res.send(gameStatus);
 });
+
+// app.post('join-game', (req, res) => {
+//   const { player }: { player: string } = req.body;
+//   if (gameStatus.status === GameStatus.Open) {
+//     res.send(addPlayer(player));
+//   } else {
+//     res.status(400).send('Game is not open');
+//   }
+// });
 
 io.on('connection', (socket) => {
   console.log(`Socket ${socket.id} has connected`);
@@ -34,6 +45,19 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () =>
     console.log(`Socket ${socket.id} has disconnected`)
   );
+
+  socket.on('join-game', (player) => {
+    if (gameStatus.status === GameStatus.Open) {
+      const added = addPlayer(player, socket.id);
+      if (added) {
+        socket.emit('joined-game', player);
+      } else {
+        socket.emit('join-failed', `${player} already exists`);
+      }
+    } else {
+      socket.emit('join-game-failure', 'Game is not open');
+    }
+  });
 });
 
 httpServer.listen(4444, () => {

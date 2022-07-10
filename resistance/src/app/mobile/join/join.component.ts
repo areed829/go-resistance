@@ -12,11 +12,7 @@ export class JoinComponent implements OnInit {
 
   constructor(private webSocketService: WebSocketService) {}
 
-  ngOnInit() {
-    this.webSocketService.getMessages().subscribe((message) => {
-      console.log(message);
-    });
-  }
+  ngOnInit() {}
 
   join() {
     this.sendMessage(this.form.value.name as string);
@@ -24,6 +20,6 @@ export class JoinComponent implements OnInit {
 
   private sendMessage(message: string) {
     console.log(message);
-    this.webSocketService.sendMessage('getDoc', message);
+    this.webSocketService.sendMessage('add-player', message);
   }
 }
