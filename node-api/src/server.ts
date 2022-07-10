@@ -18,6 +18,11 @@ app.get('/game-status', (req, res) => {
   res.send(gameStatus);
 });
 
+app.post('/kill-game', (req, res) => {
+  gameStatus = { status: GameStatus.Closed };
+  res.send(gameStatus);
+});
+
 app.get('/start-game', (req, res) => {
   gameStatus = { status: GameStatus.Open };
   res.send(gameStatus);

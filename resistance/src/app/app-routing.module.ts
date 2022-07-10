@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { KillGameComponent } from './kill-game/kill-game.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'welcome',
+    redirectTo: 'mobile',
     pathMatch: 'full',
   },
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
     path: 'mobile',
     loadChildren: () =>
       import('./mobile/mobile.module').then((m) => m.MobileModule),
+  },
+  {
+    path: 'kill',
+    component: KillGameComponent,
   },
 ];
 
