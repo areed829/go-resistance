@@ -10,10 +10,33 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { gameReducer } from './store/reducer';
+import { AppEffectsService } from './store/effects';
 
 @NgModule({
   declarations: [AppComponent, KillGameComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, StoreModule.forRoot({}, {}), EffectsModule.forRoot([]), StoreRouterConnectingModule.forRoot(), StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    StoreModule.forRoot(
+      { game: gameReducer },
+      {
+        runtimeChecks: {
+          strictStateImmutability: true,
+          strictActionImmutability: true,
+          strictActionWithinNgZone: true,
+          strictActionTypeUniqueness: true,
+        },
+      },
+    ),
+    EffectsModule.forRoot([AppEffectsService]),
+    StoreRouterConnectingModule.forRoot(),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
