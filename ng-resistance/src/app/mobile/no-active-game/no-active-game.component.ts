@@ -20,7 +20,6 @@ export class NoActiveGameComponent implements OnInit {
     this.socketService
       .getHostMessages()
       .pipe(
-        tap((message) => console.log('message', message)),
         filter((message) => message.event === HostEvents.gameOpened),
         take(1),
         tap(() => this.route.navigate(['/mobile', 'join'])),

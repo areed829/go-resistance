@@ -15,12 +15,10 @@ export const hostServerOnConnection = (socket: Socket) => {
   });
 
   socket.on(HostEvents.rejoinGame, () => {
-    console.log('Rejoin game', socket.id);
     host = { ...host, socket };
   });
 
   socket.on(HostEvents.openGame, () => {
-    console.log('Open game', socket.id);
     host = { ...host, socket, status: GameStatus.Open };
     socket.broadcast.emit(HostEvents.gameOpened);
   });
