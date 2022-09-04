@@ -8,7 +8,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { GameStatus } from '../welcome/game-status';
+import { GameStatus } from '../models/game-status';
 import { NODE_HOST } from '../api-url';
 
 @Injectable()
@@ -16,11 +16,11 @@ export class NoActiveGameGuardService implements CanActivate {
   constructor(
     @Inject(NODE_HOST) private host: string,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    state: RouterStateSnapshot,
   ):
     | boolean
     | UrlTree
@@ -32,8 +32,8 @@ export class NoActiveGameGuardService implements CanActivate {
         map(({ status }) =>
           status === GameStatus.Open
             ? true
-            : this.router.parseUrl('/mobile/no-active-game')
-        )
+            : this.router.parseUrl('/mobile/no-active-game'),
+        ),
       );
   }
 }

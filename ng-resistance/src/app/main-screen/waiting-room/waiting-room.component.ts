@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
+import { HostEvents } from 'src/app/models/host-events';
 import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
@@ -12,9 +13,10 @@ export class WaitingRoomComponent implements OnInit {
   constructor(private webSocketService: WebSocketService) {}
 
   ngOnInit() {
+    this.webSocketService.sendHostMessage(HostEvents.rejoinGame, '');
     this.players$ = this.webSocketService.getMessages().pipe(
       tap((message) => console.log(message)),
-      map((message) => 'player')
+      map((message) => 'player'),
     );
   }
 }

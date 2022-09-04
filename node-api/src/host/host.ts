@@ -10,18 +10,31 @@ export interface Host {
 let host: Host = { status: GameStatus.Closed, socket: null };
 
 export const hostServerOnConnection = (socket: Socket) => {
-  console.log(`Host Socket ${socket.id} has connected`);
-  socket.on('disconnect', () =>
-    console.log(`Host Socket ${socket.id} has disconnected`)
-  );
+  socket.on('disconnect', () => {
+    host = { ...host, socket: null };
+  });
+
+  socket.on(HostEvents.rejoinGame, () => {
+    console.log('Rejoin game', socket.id);
+    host = { ...host, socket };
+  });
 
   socket.on(HostEvents.openGame, () => {
+    console.log('Open game', socket.id);
     host = { ...host, socket, status: GameStatus.Open };
+    socket.broadcast.emit(HostEvents.gameOpened);
   });
 };
 
-export const setGameStatus = (socket: Socket, status: GameStatus) =>
-  (host = { ...host, socket, status });
+export const openGame = () => {
+  host = { ...host, status: GameStatus.Open };
+  host.socket?.emit(HostEvents.openGame, { status: GameStatus.Open });
+};
+
+export const killGame = () => {
+  host = { ...host, status: GameStatus.Closed };
+  host.socket?.emit(HostEvents.killGame, { status: GameStatus.Closed });
+};
 
 export const getGame = () => host;
 export const getGameStatus = () => host.status;

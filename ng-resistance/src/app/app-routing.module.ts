@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NODE_HOST } from './api-url';
+import { DebugComponent } from './debug/debug.component';
 import { KillGameComponent } from './kill-game/kill-game.component';
 
 const routes: Routes = [
@@ -8,6 +9,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'mobile',
     pathMatch: 'full',
+  },
+  {
+    path: 'debug',
+    component: DebugComponent,
   },
   {
     path: 'welcome',
@@ -18,7 +23,7 @@ const routes: Routes = [
     path: 'main',
     loadChildren: () =>
       import('./main-screen/main-screen.module').then(
-        (m) => m.MainScreenModule
+        (m) => m.MainScreenModule,
       ),
   },
   {

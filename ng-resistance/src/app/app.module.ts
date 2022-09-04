@@ -12,13 +12,16 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { gameReducer } from './store/reducer';
 import { AppEffectsService } from './store/effects';
+import { DebugComponent } from './debug/debug.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [AppComponent, KillGameComponent],
+  declarations: [AppComponent, KillGameComponent, DebugComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
     StoreModule.forRoot(
       { game: gameReducer },
       {

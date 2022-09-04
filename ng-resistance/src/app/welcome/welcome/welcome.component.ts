@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameService } from '../game.service';
+import { HostEvents } from 'src/app/models/host-events';
+import { WebSocketService } from 'src/app/web-socket.service';
 
 @Component({
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
 })
 export class WelcomeComponent {
-  status = this.gameService.getGameStatus();
-  constructor(private gameService: GameService, private router: Router) {}
+  constructor(
+    private webSocketService: WebSocketService,
+    private router: Router,
+  ) {}
 
   startGame() {
-    this.gameService.startGame().subscribe();
-    this.navigateToWaitingRoom();
-  }
-
-  navigateToWaitingRoom() {
+    this.webSocketService.sendHostMessage(HostEvents.openGame, '');
     this.router.navigate(['main', 'waiting-room']);
   }
 }
