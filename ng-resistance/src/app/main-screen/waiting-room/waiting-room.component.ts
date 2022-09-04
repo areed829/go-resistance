@@ -14,9 +14,5 @@ export class WaitingRoomComponent implements OnInit {
 
   ngOnInit() {
     this.webSocketService.sendHostMessage(HostEvents.rejoinGame, '');
-    this.players$ = this.webSocketService.getMessages().pipe(
-      tap((message) => console.log(message)),
-      map((message) => 'player'),
-    );
   }
 }

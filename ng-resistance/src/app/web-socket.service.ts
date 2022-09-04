@@ -18,8 +18,6 @@ export class WebSocketService {
   private readonly socketUrl = environment.SOCKET_ENDPOINT;
   private readonly playerUrl = `${this.socketUrl}/player`;
   private readonly hostUrl = `${this.socketUrl}/host`;
-  private socket: Socket;
-  private messages: Observable<Message<unknown>>;
 
   private playerSocket: Socket;
   private playerMessages: Observable<Message<unknown>>;
@@ -28,17 +26,11 @@ export class WebSocketService {
   private hostMessages: Observable<Message<unknown>>;
 
   constructor() {
-    this.socket = io(this.socketUrl);
     this.playerSocket = io(this.playerUrl);
     this.hostSocket = io(this.hostUrl);
 
-    this.messages = messages(this.socket);
     this.playerMessages = messages(this.playerSocket);
     this.hostMessages = messages(this.hostSocket);
-  }
-
-  public getMessages() {
-    return this.messages;
   }
 
   public getPlayerMessages() {
@@ -47,10 +39,6 @@ export class WebSocketService {
 
   public getHostMessages() {
     return this.hostMessages;
-  }
-
-  public sendMessage(event: string, payload: string) {
-    this.socket.emit(event, payload);
   }
 
   public sendPlayerMessage(event: PlayerEvents, payload: string) {

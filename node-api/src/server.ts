@@ -27,12 +27,6 @@ app.use(cors({ origin: 'http://localhost:4200' }));
 const playerServer = io.of('/player');
 const hostServer = io.of('/host');
 
-io.on('connection', (socket) => {
-  socket.on('disconnect', () =>
-    console.log(`Socket ${socket.id} has disconnected`)
-  );
-});
-
 hostServer.on('connection', hostServerOnConnection);
 playerServer.on('connection', playerServerOnConnection);
 
