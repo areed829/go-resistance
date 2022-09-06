@@ -3,6 +3,7 @@ import { Socket } from 'socket.io';
 export interface Player {
   name: string;
   socket: Socket;
+  isFirst: boolean;
 }
 
 export let players: { [socketId: string]: Player } = {};
@@ -12,20 +13,14 @@ export const playerServerOnConnection = (socket: Socket) => {
     const { [socket.id]: removedPlayer, ...filteredPlayers } = players;
     players = filteredPlayers;
   });
-
-  socket.on('join-game', (player) => {
-    const added = addPlayer(player, socket);
-    if (added) {
-      socket.emit('joined-game', player);
-    } else {
-      socket.emit('join-failed', `${player} already exists`);
-    }
-  });
 };
 
 export const addPlayer = (name: string, socket: Socket) => {
   if (!playerExists(name)) {
-    players = { ...players, [socket.id]: { name, socket } };
+    players = {
+      ...players,
+      [socket.id]: { name, socket, isFirst: !Object.keys(players).length },
+    };
     return true;
   }
   return false;

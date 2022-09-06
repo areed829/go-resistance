@@ -7,6 +7,7 @@ import { JoinComponent } from './join/join.component';
 import { NoActiveGameGuardService } from './no-active-game-guard.service';
 import { NoActiveGameComponent } from './no-active-game/no-active-game.component';
 import { ResistanceService } from './resistance.service';
+import { WaitForGameComponent } from './wait-for-game/wait-for-game.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'prefix', redirectTo: 'join' },
@@ -19,11 +20,15 @@ const routes: Routes = [
     path: 'no-active-game',
     component: NoActiveGameComponent,
   },
+  {
+    path: 'wait-for-game',
+    component: WaitForGameComponent,
+  },
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],
-  declarations: [JoinComponent, NoActiveGameComponent],
+  declarations: [JoinComponent, NoActiveGameComponent, WaitForGameComponent],
   providers: [NoActiveGameGuardService, ResistanceService],
 })
 export class MobileModule {}

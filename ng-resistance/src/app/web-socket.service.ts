@@ -33,6 +33,14 @@ export class WebSocketService {
     this.hostMessages = messages(this.hostSocket);
   }
 
+  public getHostId() {
+    return this.hostSocket.id;
+  }
+
+  public getPlayerId() {
+    return this.playerSocket.id;
+  }
+
   public getPlayerMessages() {
     return this.playerMessages;
   }
