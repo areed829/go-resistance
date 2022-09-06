@@ -61,24 +61,23 @@ app.get('/kill-game', (req, res) => {
 app.post('/join-game', (req, res) => {
   const { name, id } = req.body;
   const errors = [];
+  errors.push('name already exists');
   if (!name) {
     errors.push('name is required');
   }
   if (!id) {
     errors.push('id is required');
   }
-  if (errors.length) {
-    res.status(400).send({ errors });
-    return;
-  }
   const playerSocket = playerServer.sockets.get(id);
   if (!playerSocket) {
-    res.status(400).send({ errors: ['player not found'] });
-    return;
+    errors.push('player not found');
   }
   const added = addPlayer(name, playerSocket);
   if (!added) {
-    res.status(400).send({ errors: ['Name is already used'] });
+    errors.push('name already exists');
+  }
+  if (errors.length) {
+    res.status(400).send({ errors });
     return;
   }
   res.status(204).send();
