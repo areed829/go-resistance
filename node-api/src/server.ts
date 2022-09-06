@@ -24,7 +24,6 @@ const io = new Server(httpServer, {
   cors: { origin: 'http://localhost:4200' },
 });
 
-// app.use(cors({ origin: 'http://localhost:4200' }));
 app.use(cors());
 
 const playerServer = io.of('/player');
@@ -45,7 +44,7 @@ app.get('/game-status', (req, res) => {
 });
 
 app.get('/players', (req, res) => {
-  res.status(200).send({ players: getPlayers() });
+  res.status(200).send(getPlayers());
 });
 
 app.get('/clear-players', (req, res) => {
@@ -60,31 +59,29 @@ app.get('/kill-game', (req, res) => {
 });
 
 app.post('/join-game', (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
-  // const { name, id } = req.body;
-  // const errors = [];
-  // if (!name) {
-  //   errors.push('name is required');
-  // }
-  // if (!id) {
-  //   errors.push('id is required');
-  // }
-  // if (errors.length) {
-  //   res.status(400).send({ errors });
-  //   return;
-  // }
-  // const playerSocket = playerServer.sockets.get(id);
-  // if (!playerSocket) {
-  //   res.status(400).send({ errors: ['player not found'] });
-  //   return;
-  // }
-  // const added = addPlayer(name, playerSocket);
-  // if (!added) {
-  //   res.status(400).send({ errors: ['Name is already used'] });
-  //   return;
-  // }
-  // res.status(204).send();
+  const { name, id } = req.body;
+  const errors = [];
+  if (!name) {
+    errors.push('name is required');
+  }
+  if (!id) {
+    errors.push('id is required');
+  }
+  if (errors.length) {
+    res.status(400).send({ errors });
+    return;
+  }
+  const playerSocket = playerServer.sockets.get(id);
+  if (!playerSocket) {
+    res.status(400).send({ errors: ['player not found'] });
+    return;
+  }
+  const added = addPlayer(name, playerSocket);
+  if (!added) {
+    res.status(400).send({ errors: ['Name is already used'] });
+    return;
+  }
+  res.status(204).send();
 });
 
 httpServer.listen(4444, () => {

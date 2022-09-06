@@ -30,7 +30,8 @@ export const clearPlayers = () => {
   players = {};
 };
 
-export const getPlayers = () => players;
+export const getPlayers = () =>
+  Object.values(players).map(({ name, isFirst }) => ({ name, isFirst }));
 
 const playerExists = (name: string) =>
   Object.keys(players).some(
