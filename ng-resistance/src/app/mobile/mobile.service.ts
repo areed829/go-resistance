@@ -5,7 +5,7 @@ import { GameStatus } from '../models/game-status';
 import { WebSocketService } from '../web-socket.service';
 
 @Injectable()
-export class ResistanceService {
+export class MobileService {
   constructor(
     @Inject(NODE_HOST) private host: string,
     private httpClient: HttpClient,
@@ -15,6 +15,12 @@ export class ResistanceService {
   getGameStatus() {
     return this.httpClient.get<{ status: GameStatus; hostExists: boolean }>(
       `${this.host}/game-status`,
+    );
+  }
+
+  isFirstPlayer() {
+    return this.httpClient.get<boolean>(
+      `${this.host}/is-first-player?id=${this.webSocketService.getPlayerId()}`,
     );
   }
 

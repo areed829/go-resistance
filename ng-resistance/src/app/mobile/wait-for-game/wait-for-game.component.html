@@ -1,0 +1,7 @@
+<ng-container *ngIf="isFirst$ | async as isFirst; else loading">
+  <div class="">
+    <button blue-button>Start Game</button>
+  </div>
+</ng-container>
+
+<ng-template #loading>Loading...</ng-template>

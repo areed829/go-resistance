@@ -40,3 +40,6 @@ const playerExists = (name: string) =>
         sensitivity: 'accent',
       }) === 0
   );
+
+export const isFirstPlayer = (id: string): boolean | undefined =>
+  players[id]?.isFirst;

@@ -7,6 +7,7 @@ import {
   addPlayer,
   clearPlayers,
   getPlayers,
+  isFirstPlayer,
   playerServerOnConnection,
 } from './player/player';
 import {
@@ -61,7 +62,6 @@ app.get('/kill-game', (req, res) => {
 app.post('/join-game', (req, res) => {
   const { name, id } = req.body;
   const errors = [];
-  errors.push('name already exists');
   if (!name) {
     errors.push('name is required');
   }
@@ -81,6 +81,16 @@ app.post('/join-game', (req, res) => {
     return;
   }
   res.status(204).send();
+});
+
+app.get('/is-first-player', (req, res) => {
+  const { id } = req.query;
+  const isFirst = isFirstPlayer(id as string);
+  if (isFirst === undefined) {
+    res.status(400).send({ error: 'player not found' });
+    return;
+  }
+  res.status(200).send(isFirst);
 });
 
 httpServer.listen(4444, () => {

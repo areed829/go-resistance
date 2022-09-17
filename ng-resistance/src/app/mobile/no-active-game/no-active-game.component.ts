@@ -4,7 +4,7 @@ import { filter, Observable, take, tap } from 'rxjs';
 import { GameStatus } from 'src/app/models/game-status';
 import { HostEvents } from 'src/app/models/host-events';
 import { WebSocketService } from 'src/app/web-socket.service';
-import { ResistanceService } from '../resistance.service';
+import { MobileService } from '../mobile.service';
 
 @Component({
   templateUrl: 'no-active-game.component.html',
@@ -12,7 +12,7 @@ import { ResistanceService } from '../resistance.service';
 export class NoActiveGameComponent implements OnInit {
   constructor(
     private socketService: WebSocketService,
-    private resistanceService: ResistanceService,
+    private resistanceService: MobileService,
     private route: Router,
   ) {}
 

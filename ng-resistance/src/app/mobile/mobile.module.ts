@@ -6,8 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { JoinComponent } from './join/join.component';
 import { NoActiveGameGuardService } from './no-active-game-guard.service';
 import { NoActiveGameComponent } from './no-active-game/no-active-game.component';
-import { ResistanceService } from './resistance.service';
+import { MobileService } from './mobile.service';
 import { WaitForGameComponent } from './wait-for-game/wait-for-game.component';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   { path: '', pathMatch: 'prefix', redirectTo: 'join' },
@@ -27,8 +28,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    ReactiveFormsModule,
+    SharedModule,
+  ],
   declarations: [JoinComponent, NoActiveGameComponent, WaitForGameComponent],
-  providers: [NoActiveGameGuardService, ResistanceService],
+  providers: [NoActiveGameGuardService, MobileService],
 })
 export class MobileModule {}

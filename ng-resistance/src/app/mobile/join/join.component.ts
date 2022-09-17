@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, Subscription, tap } from 'rxjs';
-import { ResistanceService } from '../resistance.service';
+import { MobileService } from '../mobile.service';
 
 @Component({
   templateUrl: 'join.component.html',
@@ -33,7 +33,7 @@ export class JoinComponent implements OnInit {
   subscription$ = new Subscription();
 
   constructor(
-    private resistanceService: ResistanceService,
+    private mobileService: MobileService,
     private router: Router,
     private ref: ChangeDetectorRef,
   ) {}
@@ -41,7 +41,7 @@ export class JoinComponent implements OnInit {
   ngOnInit() {}
 
   join() {
-    this.resistanceService
+    this.mobileService
       .joinGame(this.form.value.name as string)
       .pipe(
         tap(() => {
