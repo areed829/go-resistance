@@ -17,6 +17,8 @@ import {
   killGame,
   openGame,
 } from './host/host';
+import { firstValueFrom } from 'rxjs';
+import { getPlayersTest } from './state/state';
 
 const app = express();
 app.use(express.json());
@@ -91,6 +93,11 @@ app.get('/is-first-player', (req, res) => {
     return;
   }
   res.status(200).send(isFirst);
+});
+
+app.get('/test', async (req, res) => {
+  const test = await firstValueFrom(getPlayersTest());
+  res.status(200).send(test);
 });
 
 httpServer.listen(4444, () => {

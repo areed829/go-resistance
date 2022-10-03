@@ -1,13 +1,7 @@
 import { Socket } from 'socket.io';
-import { GameStatus } from '../game-status';
+import { DebugOpenGame } from '../state';
+import { Host, GameStatus } from '../models';
 import { HostEvents } from './host-events';
-
-export interface Host {
-  status: GameStatus;
-  socket: Socket;
-}
-
-let host: Host = { status: GameStatus.Closed, socket: null };
 
 export const hostServerOnConnection = (socket: Socket) => {
   socket.on('disconnect', () => {
@@ -25,13 +19,15 @@ export const hostServerOnConnection = (socket: Socket) => {
 };
 
 export const openGame = () => {
-  host = { ...host, status: GameStatus.Open };
-  host.socket?.emit(HostEvents.openGame, { status: GameStatus.Open });
+  // host = { ...host, status: GameStatus.Open };
+  // host.socket?.emit(HostEvents.openGame, { status: GameStatus.Open });
+  gameStateReducer(new DebugOpenGame());
 };
 
 export const killGame = () => {
-  host = { ...host, status: GameStatus.Closed };
-  host.socket?.emit(HostEvents.killGame, { status: GameStatus.Closed });
+  gameStateReducer(new DebugKillGame());
+  // host = { ...host, status: GameStatus.Closed };
+  // host.socket?.emit(HostEvents.killGame, { status: GameStatus.Closed });
 };
 
 export const getGame = () => host;
