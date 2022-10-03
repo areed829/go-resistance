@@ -1,45 +1,46 @@
+import { firstValueFrom, map } from 'rxjs';
 import { Socket } from 'socket.io';
-
-export interface Player {
-  name: string;
-  socket: Socket;
-  isFirst: boolean;
-}
-
-export let players: { [socketId: string]: Player } = {};
+import {
+  gameStateReducer,
+  getFirstPlayer,
+  RemovePlayer,
+  playerNameExists,
+  AddPlayer,
+  ClearPlayers,
+  getPlayers,
+} from '../state';
 
 export const playerServerOnConnection = (socket: Socket) => {
   socket.on('disconnect', () => {
-    const { [socket.id]: removedPlayer, ...filteredPlayers } = players;
-    players = filteredPlayers;
+    gameStateReducer(new RemovePlayer(socket.id));
   });
 };
 
-export const addPlayer = (name: string, socket: Socket) => {
-  if (!playerExists(name)) {
-    players = {
-      ...players,
-      [socket.id]: { name, socket, isFirst: !Object.keys(players).length },
-    };
+export const addPlayerAsync = async (name: string, socket: Socket) => {
+  const nameExists = await firstValueFrom(playerNameExists(name));
+  if (!nameExists) {
+    gameStateReducer(new AddPlayer({ name, socket, isFirst: false }));
     return true;
   }
   return false;
 };
 
 export const clearPlayers = () => {
-  players = {};
+  gameStateReducer(new ClearPlayers());
 };
 
-export const getPlayers = () =>
-  Object.values(players).map(({ name, isFirst }) => ({ name, isFirst }));
-
-const playerExists = (name: string) =>
-  Object.keys(players).some(
-    (socketId) =>
-      players[socketId].name.localeCompare(name, undefined, {
-        sensitivity: 'accent',
-      }) === 0
+export const getPlayersAsync = async () =>
+  firstValueFrom(
+    getPlayers().pipe(
+      map((players) =>
+        Object.values(players).map(({ name, isFirst }) => ({ name, isFirst }))
+      )
+    )
   );
 
-export const isFirstPlayer = (id: string): boolean | undefined =>
-  players[id]?.isFirst;
+export const isFirstPlayerAsync = async (
+  id: string
+): Promise<boolean | undefined> => {
+  const firstPlayer = await firstValueFrom(getFirstPlayer());
+  return firstPlayer?.socket.id === id;
+};

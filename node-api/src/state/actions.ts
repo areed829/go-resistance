@@ -3,12 +3,15 @@ import { Player, Host } from '../models';
 
 export enum PlayerActionTypes {
   addPlayer = 'ADD_PLAYER',
+  removePlayer = 'REMOVE_PLAYER',
+  clearPlayers = 'CLEAR_PLAYERS',
 }
 
 export enum HostActionTypes {
   addHost = 'ADD_HOST',
+  removeHost = 'REMOVE_HOST',
   debugKillGame = 'DEBUG_KILL_GAME',
-  debugOpenGame = 'DEBUG_OPEN_GAME',
+  openGame = 'DEBUG_OPEN_GAME',
 }
 
 export class AddPlayer implements Action<Player> {
@@ -17,17 +20,37 @@ export class AddPlayer implements Action<Player> {
   constructor(readonly payload: Player) {}
 }
 
+export class RemovePlayer implements Action<string> {
+  readonly type = PlayerActionTypes.removePlayer;
+  constructor(readonly payload: string) {}
+}
+
+export class ClearPlayers implements Action {
+  readonly type = PlayerActionTypes.clearPlayers;
+}
+
 export class AddHost implements Action<Host> {
   readonly type = HostActionTypes.addHost;
   constructor(readonly payload: Host) {}
+}
+
+export class RemoveHost implements Action {
+  readonly type = HostActionTypes.removeHost;
 }
 
 export class DebugKillGame implements Action {
   readonly type = HostActionTypes.debugKillGame;
 }
 
-export class DebugOpenGame implements Action {
-  readonly type = HostActionTypes.debugOpenGame;
+export class OpenGame implements Action {
+  readonly type = HostActionTypes.openGame;
 }
 
-export type actions = AddPlayer | AddHost | DebugKillGame | DebugOpenGame;
+export type actions =
+  | AddPlayer
+  | RemovePlayer
+  | ClearPlayers
+  | AddHost
+  | RemoveHost
+  | DebugKillGame
+  | OpenGame;

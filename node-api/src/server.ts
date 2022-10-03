@@ -3,22 +3,22 @@ import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import {
-  addPlayer,
-  clearPlayers,
-  getPlayers,
-  isFirstPlayer,
-  playerServerOnConnection,
-} from './player/player';
-import {
-  getGameSocket,
-  getGameStatus,
-  hostServerOnConnection,
-  killGame,
-  openGame,
-} from './host/host';
 import { firstValueFrom } from 'rxjs';
-import { getPlayersTest } from './state/state';
+
+import {
+  addPlayerAsync,
+  clearPlayers,
+  isFirstPlayerAsync,
+  playerServerOnConnection,
+} from './player';
+import { hostServerOnConnection, killGame } from './host';
+import {
+  gameStateReducer,
+  getGameStatus,
+  getHost,
+  getPlayers,
+  OpenGame,
+} from './state';
 
 const app = express();
 app.use(express.json());
@@ -36,14 +36,14 @@ hostServer.on('connection', hostServerOnConnection);
 playerServer.on('connection', playerServerOnConnection);
 
 app.get('/open-game', (req, res) => {
-  openGame();
+  gameStateReducer(new OpenGame());
   res.status(204).send();
 });
 
-app.get('/game-status', (req, res) => {
-  res
-    .status(200)
-    .send({ status: getGameStatus(), hostExists: !!getGameSocket() });
+app.get('/game-status', async (req, res) => {
+  const status = await firstValueFrom(getGameStatus());
+  const host = await firstValueFrom(getHost());
+  res.status(200).send({ status, hostExists: !!host });
 });
 
 app.get('/players', (req, res) => {
@@ -61,7 +61,7 @@ app.get('/kill-game', (req, res) => {
   res.status(204).send();
 });
 
-app.post('/join-game', (req, res) => {
+app.post('/join-game', async (req, res) => {
   const { name, id } = req.body;
   const errors = [];
   if (!name) {
@@ -74,7 +74,7 @@ app.post('/join-game', (req, res) => {
   if (!playerSocket) {
     errors.push('player not found');
   }
-  const added = addPlayer(name, playerSocket);
+  const added = await addPlayerAsync(name, playerSocket);
   if (!added) {
     errors.push('name already exists');
   }
@@ -85,9 +85,9 @@ app.post('/join-game', (req, res) => {
   res.status(204).send();
 });
 
-app.get('/is-first-player', (req, res) => {
+app.get('/is-first-player', async (req, res) => {
   const { id } = req.query;
-  const isFirst = isFirstPlayer(id as string);
+  const isFirst = await isFirstPlayerAsync(id as string);
   if (isFirst === undefined) {
     res.status(400).send({ error: 'player not found' });
     return;
@@ -96,7 +96,7 @@ app.get('/is-first-player', (req, res) => {
 });
 
 app.get('/test', async (req, res) => {
-  const test = await firstValueFrom(getPlayersTest());
+  const test = await firstValueFrom(getPlayers());
   res.status(200).send(test);
 });
 
