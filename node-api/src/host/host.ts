@@ -1,26 +1,19 @@
-import { Socket } from 'socket.io';
+import { firstValueFrom } from 'rxjs';
 import {
   OpenGame,
   gameStateReducer,
-  RemoveHost,
-  AddHost,
   DebugKillGame,
+  getGameStatus,
+  RemoveHost,
 } from '../state';
-import { HostEvents } from './host-events';
 
-export const hostServerOnConnection = (socket: Socket) => {
-  socket.on('disconnect', () => {
-    gameStateReducer(new RemoveHost());
-  });
-
-  socket.on(HostEvents.rejoinGame, () => {
-    gameStateReducer(new AddHost({ socket }));
-  });
-
-  socket.on(HostEvents.openGame, () => {
-    gameStateReducer(new OpenGame());
-    socket.broadcast.emit(HostEvents.gameOpened);
-  });
+export const removeHost = () => {
+  gameStateReducer(new RemoveHost());
 };
+
+export const openUpGame = () => gameStateReducer(new OpenGame());
+
+export const currentGameStatusAsync = async () =>
+  firstValueFrom(getGameStatus());
 
 export const killGame = () => gameStateReducer(new DebugKillGame());
