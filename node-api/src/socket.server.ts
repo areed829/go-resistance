@@ -1,37 +1,36 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { addHost, openUpGame, removeHost } from './host';
 import { HostEvents } from './host/host-events';
-import { io } from './server';
-// import {
-//   gameStateReducer,
-//   RemoveHost,
-//   AddHost,
-//   OpenGame,
-//   RemovePlayer,
-// } from './state';
+import { removePlayer } from './player';
 
-const playerServer = io.of('/player');
-const hostServer = io.of('/host');
+export const setupSocketServer = (
+  io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
+) => {
+  const playerServer = io.of('/player');
+  const hostServer = io.of('/host');
 
-export const hostServerOnConnection = (socket: Socket) => {
-  socket.on('disconnect', () => {
-    gameStateReducer(new RemoveHost());
-  });
+  const hostServerOnConnection = (socket: Socket) => {
+    socket.on('disconnect', () => {
+      removeHost;
+    });
 
-  socket.on(HostEvents.rejoinGame, () => {
-    gameStateReducer(new AddHost({ socket }));
-  });
+    socket.on(HostEvents.rejoinGame, () => {
+      addHost(socket);
+    });
 
-  socket.on(HostEvents.openGame, () => {
-    gameStateReducer(new OpenGame());
-    socket.broadcast.emit(HostEvents.gameOpened);
-  });
+    socket.on(HostEvents.openGame, () => {
+      openUpGame();
+      socket.broadcast.emit(HostEvents.gameOpened);
+    });
+  };
+
+  const playerServerOnConnection = (socket: Socket) => {
+    socket.on('disconnect', () => {
+      removePlayer(socket.id);
+    });
+  };
+
+  hostServer.on('connection', hostServerOnConnection);
+  playerServer.on('connection', playerServerOnConnection);
 };
-
-export const playerServerOnConnection = (socket: Socket) => {
-  socket.on('disconnect', () => {
-    gameStateReducer(new RemovePlayer(socket.id));
-  });
-};
-
-hostServer.on('connection', hostServerOnConnection);
-playerServer.on('connection', playerServerOnConnection);

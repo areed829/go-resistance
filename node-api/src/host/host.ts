@@ -1,19 +1,19 @@
 import { firstValueFrom } from 'rxjs';
-import {
-  OpenGame,
-  gameStateReducer,
-  DebugKillGame,
-  getGameStatus,
-  RemoveHost,
-} from '../state';
+import { getGameStatus } from '../state/selectors';
+import * as actions from '../state/actions';
+import { gameStateReducer } from '../state/state';
+import { Socket } from 'socket.io';
 
 export const removeHost = () => {
-  gameStateReducer(new RemoveHost());
+  gameStateReducer(new actions.RemoveHost());
 };
 
-export const openUpGame = () => gameStateReducer(new OpenGame());
+export const addHost = (socket: Socket) =>
+  gameStateReducer(new actions.AddHost({ socket }));
+
+export const openUpGame = () => gameStateReducer(new actions.OpenGame());
 
 export const currentGameStatusAsync = async () =>
   firstValueFrom(getGameStatus());
 
-export const killGame = () => gameStateReducer(new DebugKillGame());
+export const killGame = () => gameStateReducer(new actions.DebugKillGame());
