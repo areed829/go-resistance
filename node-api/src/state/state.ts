@@ -27,7 +27,9 @@ export const gameStateReducer = (action: actions) => {
           ...state.players,
           [socket.id]: {
             ...action.payload,
-            isFirst: !Object.keys(state.players).length,
+            isFirst: !Object.values(state.players).some(
+              ({ isFirst }) => isFirst
+            ),
           },
         },
       };
@@ -47,6 +49,24 @@ export const gameStateReducer = (action: actions) => {
         ...state,
         players: {},
       };
+      break;
+    }
+    case PlayerActionTypes.playerConnected: {
+      const socket = action.payload;
+      const player = state.players[socket.id];
+      if (!player) {
+        state = {
+          ...state,
+          players: {
+            ...state.players,
+            [socket.id]: {
+              isFirst: false,
+              name: '',
+              socket,
+            },
+          },
+        };
+      }
       break;
     }
     case HostActionTypes.addHost:

@@ -26,6 +26,10 @@ export const clearPlayers = () => {
   gameStateReducer(new actions.ClearPlayers());
 };
 
+export const playerConnected = (socket: Socket) => {
+  gameStateReducer(new actions.PlayerConnected(socket));
+};
+
 export const getPlayersAsync = async () =>
   firstValueFrom(
     getPlayers().pipe(
@@ -53,3 +57,5 @@ export const getPlayerByIdAsync = async (id: string) => {
   const players = await firstValueFrom(getPlayers());
   return players[id];
 };
+
+export const playerListUpdated = () => getPlayers();

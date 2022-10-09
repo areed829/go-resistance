@@ -6,8 +6,9 @@ import {
   addPlayerAsync,
   isFirstPlayerAsync,
   getPlayerByIdAsync,
+  getPlayersAsync,
 } from './player';
-import { getHost, getPlayers } from './state';
+import { getHost } from './state';
 
 export const setupRestServer = (app: express.Express) => {
   app.get('/open-game', (req, res) => {
@@ -21,8 +22,8 @@ export const setupRestServer = (app: express.Express) => {
     res.status(200).send({ status, hostExists: !!host });
   });
 
-  app.get('/players', (req, res) => {
-    res.status(200).send(getPlayers());
+  app.get('/players', async (req, res) => {
+    res.status(200).send(await getPlayersAsync());
   });
 
   app.get('/clear-players', (req, res) => {

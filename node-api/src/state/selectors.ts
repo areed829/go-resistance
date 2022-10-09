@@ -1,8 +1,11 @@
-import { map } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs';
 import { getGameState } from './state';
 
 export const getPlayers = () =>
-  getGameState().pipe(map((state) => state.players));
+  getGameState().pipe(
+    map((state) => state.players),
+    distinctUntilChanged()
+  );
 
 export const getFirstPlayer = () =>
   getPlayers().pipe(

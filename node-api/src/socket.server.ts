@@ -1,8 +1,9 @@
+import { tap } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { addHost, openUpGame, removeHost } from './host';
 import { HostEvents } from './host/host-events';
-import { removePlayer } from './player';
+import { playerConnected, playerListUpdated, removePlayer } from './player';
 
 export const setupSocketServer = (
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
@@ -26,10 +27,18 @@ export const setupSocketServer = (
   };
 
   const playerServerOnConnection = (socket: Socket) => {
+    playerConnected(socket);
     socket.on('disconnect', () => {
       removePlayer(socket.id);
     });
   };
+
+  playerListUpdated()
+    .pipe(
+      tap((players) => playerServer.emit('playerListUpdated', players)),
+      tap((players) => hostServer.emit('playerListUpdated', players))
+    )
+    .subscribe();
 
   hostServer.on('connection', hostServerOnConnection);
   playerServer.on('connection', playerServerOnConnection);

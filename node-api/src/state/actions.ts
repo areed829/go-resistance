@@ -1,10 +1,12 @@
 import { Action } from './action';
 import { Player, Host } from '../models';
+import { Socket } from 'socket.io';
 
 export enum PlayerActionTypes {
   addPlayer = 'ADD_PLAYER',
   removePlayer = 'REMOVE_PLAYER',
   clearPlayers = 'CLEAR_PLAYERS',
+  playerConnected = 'PLAYER_CONNECTED',
 }
 
 export enum HostActionTypes {
@@ -29,6 +31,11 @@ export class ClearPlayers implements Action {
   readonly type = PlayerActionTypes.clearPlayers;
 }
 
+export class PlayerConnected implements Action<Socket> {
+  readonly type = PlayerActionTypes.playerConnected;
+  constructor(readonly payload: Socket) {}
+}
+
 export class AddHost implements Action<Host> {
   readonly type = HostActionTypes.addHost;
   constructor(readonly payload: Host) {}
@@ -50,6 +57,7 @@ export type actions =
   | AddPlayer
   | RemovePlayer
   | ClearPlayers
+  | PlayerConnected
   | AddHost
   | RemoveHost
   | DebugKillGame
