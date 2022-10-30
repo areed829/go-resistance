@@ -1,4 +1,4 @@
-import { firstValueFrom, map } from 'rxjs';
+import { filter, firstValueFrom, map } from 'rxjs';
 import { Socket } from 'socket.io';
 import { gameStateReducer } from '../state/state';
 import * as actions from '../state/actions';
@@ -7,6 +7,7 @@ import {
   getPlayers,
   getFirstPlayer,
 } from '../state/selectors';
+import { Player } from '../models';
 
 export const addPlayerAsync = async (name: string, socket: Socket) => {
   if (!socket) throw new Error('socket is required');
@@ -58,4 +59,12 @@ export const getPlayerByIdAsync = async (id: string) => {
   return players[id];
 };
 
-export const playerListUpdated = () => getPlayers();
+export const playerListUpdated = () =>
+  getPlayers().pipe(
+    map((players) => Object.values(players).map(({ name }) => name)),
+    filterPlayersWithNoName
+  );
+
+const filterPlayersWithNoName = map<string[], string[]>((players) =>
+  players.filter((player) => player)
+);

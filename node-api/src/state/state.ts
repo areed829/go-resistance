@@ -1,4 +1,4 @@
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { GameStatus, Host, Player } from '../models';
 import { actions, PlayerActionTypes, HostActionTypes } from './actions';
 

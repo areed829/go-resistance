@@ -4,6 +4,10 @@ import { DebugService } from './debug.service';
 
 @Component({
   template: ` <div class="flex">
+      <a [href]="['/welcome']" link-button>Host Start Game</a>
+      <a [href]="['/mobile']" link-button>Player Join Game</a>
+    </div>
+    <div class="flex">
       <button (click)="getPlayers()" small-orange-button>Get Players</button>
       <button (click)="getGameStatus()" small-orange-button>
         Get Game Status
