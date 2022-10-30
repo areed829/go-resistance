@@ -1,4 +1,4 @@
-import { distinctUntilChanged, map, tap } from 'rxjs';
+import { distinctUntilChanged, map, pairwise, tap } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { addHost, openUpGame, removeHost } from './host';
@@ -29,16 +29,19 @@ export const setupSocketServer = (
   const playerServerOnConnection = (socket: Socket) => {
     playerConnected(socket);
     socket.on('disconnect', () => {
-      removePlayer(socket.id);
+      // removePlayer(socket.id);
     });
   };
 
   playerListUpdated()
     .pipe(
+      distinctUntilChanged(
+        (a, b) =>
+          a.length === b.length && a.every((value, index) => value === b[index])
+      ),
       tap((playerAdded) => console.log('playerAdded', playerAdded)),
       tap((players) => playerServer.emit('playerListUpdated', players)),
-      tap((players) => hostServer.emit('playerListUpdated', players)),
-      distinctUntilChanged()
+      tap((players) => hostServer.emit('playerListUpdated', players))
     )
     .subscribe();
 
