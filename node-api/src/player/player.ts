@@ -1,4 +1,4 @@
-import { filter, firstValueFrom, map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { Socket } from 'socket.io';
 import { gameStateReducer } from '../state/state';
 import * as actions from '../state/actions';
@@ -7,13 +7,11 @@ import {
   getPlayers,
   getFirstPlayer,
 } from '../state/selectors';
-import { Player } from '../models';
 
-export const addPlayerAsync = async (name: string, socket: Socket) => {
-  if (!socket) throw new Error('socket is required');
+export const addPlayerAsync = async (name: string, id: string) => {
   const nameExists = await firstValueFrom(playerNameExists(name));
   if (!nameExists) {
-    gameStateReducer(new actions.AddPlayer({ name, socket, isFirst: false }));
+    gameStateReducer(new actions.UpdatePlayerName({ name, id }));
     return true;
   }
   return false;
@@ -27,8 +25,8 @@ export const clearPlayers = () => {
   gameStateReducer(new actions.ClearPlayers());
 };
 
-export const playerConnected = (socket: Socket) => {
-  gameStateReducer(new actions.PlayerConnected(socket));
+export const playerConnected = (socket: Socket, id: string) => {
+  gameStateReducer(new actions.PlayerConnected({ socket, id }));
 };
 
 export const getPlayersAsync = async () =>

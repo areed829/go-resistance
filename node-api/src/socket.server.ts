@@ -1,4 +1,4 @@
-import { distinctUntilChanged, map, pairwise, tap } from 'rxjs';
+import { distinctUntilChanged, tap } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { addHost, openUpGame, removeHost } from './host';
@@ -27,7 +27,10 @@ export const setupSocketServer = (
   };
 
   const playerServerOnConnection = (socket: Socket) => {
-    playerConnected(socket);
+    if (socket.handshake.headers.id) {
+      playerConnected(socket, socket.handshake.headers.id);
+    }
+    console.log('socket', socket.handshake.headers.id);
     socket.on('disconnect', () => {
       // removePlayer(socket.id);
     });

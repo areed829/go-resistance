@@ -19,14 +19,16 @@ const state$: BehaviorSubject<GameState> = new BehaviorSubject(defaultState);
 export const gameStateReducer = (action: actions) => {
   let state = state$.getValue();
   switch (action.type) {
-    case PlayerActionTypes.addPlayer: {
-      const { socket } = action.payload;
+    case PlayerActionTypes.updatePlayerName: {
+      const { id, name } = action.payload;
       state = {
         ...state,
         players: {
           ...state.players,
-          [socket.id]: {
-            ...action.payload,
+          [id]: {
+            ...state.players[id],
+            id,
+            name,
             isFirst: !Object.values(state.players).some(
               ({ isFirst }) => isFirst
             ),
@@ -52,14 +54,15 @@ export const gameStateReducer = (action: actions) => {
       break;
     }
     case PlayerActionTypes.playerConnected: {
-      const socket = action.payload;
-      const player = state.players[socket.id];
+      const { socket, id } = action.payload;
+      const player = state.players[id];
       if (!player) {
         state = {
           ...state,
           players: {
             ...state.players,
-            [socket.id]: {
+            [id]: {
+              id,
               isFirst: false,
               name: '',
               socket,

@@ -13,6 +13,7 @@ app.use(cors());
 export const httpServer = createServer(app);
 export const io = new Server(httpServer, {
   cors: { origin: 'http://localhost:4200' },
+  cookie: true,
 });
 
 setupSocketServer(io);

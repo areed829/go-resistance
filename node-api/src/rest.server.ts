@@ -50,7 +50,7 @@ export const setupRestServer = (app: express.Express) => {
     if (!player) {
       errors.push('player not found');
     } else {
-      const added = await addPlayerAsync(name, player?.socket);
+      const added = await addPlayerAsync(name, id);
       if (!added) {
         errors.push('name already exists');
       }

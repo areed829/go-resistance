@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { BROWSER_STORAGE } from './local-storage';
 import { Message } from './models';
 import { HostEvents } from './models/host-events';
 import { PlayerEvents } from './models/player-events';
+import { UserService } from './user.service';
 
 const messages = (socket: Socket) =>
   new Observable((observer: Observer<Message<any>>) => {
@@ -25,8 +27,12 @@ export class WebSocketService {
   private hostSocket: Socket;
   private hostMessages: Observable<Message<unknown>>;
 
-  constructor() {
-    this.playerSocket = io(this.playerUrl);
+  constructor(private userService: UserService) {
+    this.playerSocket = io(this.playerUrl, {
+      extraHeaders: {
+        id: this.userService.getUserId(),
+      },
+    });
     this.hostSocket = io(this.hostUrl);
 
     this.playerMessages = messages(this.playerSocket);
