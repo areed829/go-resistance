@@ -1,6 +1,11 @@
 import express from 'express';
 import { firstValueFrom } from 'rxjs';
-import { openUpGame, currentGameStatusAsync, killGame } from './host';
+import {
+  openUpGame,
+  currentGameStatusAsync,
+  killGame,
+  getHostAsync,
+} from './host';
 import {
   clearPlayers,
   addPlayerAsync,
@@ -8,7 +13,6 @@ import {
   getPlayerByIdAsync,
   getPlayersAsync,
 } from './player';
-import { getHost } from './state';
 
 export const setupRestServer = (app: express.Express) => {
   app.get('/open-game', (req, res) => {
@@ -18,7 +22,7 @@ export const setupRestServer = (app: express.Express) => {
 
   app.get('/game-status', async (req, res) => {
     const status = await currentGameStatusAsync();
-    const host = await firstValueFrom(getHost());
+    const host = await getHostAsync();
     res.status(200).send({ status, hostExists: !!host });
   });
 

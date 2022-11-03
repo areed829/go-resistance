@@ -33,7 +33,11 @@ export const getPlayersAsync = async () =>
   firstValueFrom(
     getPlayers().pipe(
       map((players) =>
-        Object.values(players).map(({ name, isFirst }) => ({ name, isFirst }))
+        Object.values(players).map(({ name, isFirst, id }) => ({
+          name,
+          isFirst,
+          id,
+        }))
       )
     )
   );

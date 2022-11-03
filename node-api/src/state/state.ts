@@ -3,7 +3,7 @@ import { GameStatus, Host, Player } from '../models';
 import { actions, PlayerActionTypes, HostActionTypes } from './actions';
 
 export interface GameState {
-  players: { [socketId: string]: Player };
+  players: { [id: string]: Player };
   host: Host;
   gameStatus: GameStatus;
 }
