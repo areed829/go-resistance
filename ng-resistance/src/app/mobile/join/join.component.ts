@@ -21,7 +21,7 @@ import { MobileService } from '../mobile.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JoinComponent implements OnInit {
-  private existingNames: string[] = ['alex'];
+  private existingNames: string[] = [];
 
   form = new FormGroup({
     name: new FormControl('', [

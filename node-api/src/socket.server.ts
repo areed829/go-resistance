@@ -30,7 +30,6 @@ export const setupSocketServer = (
     if (socket.handshake.headers.id) {
       playerConnected(socket, socket.handshake.headers.id as string);
     }
-    console.log('socket', socket.handshake.headers.id);
     socket.on('disconnect', () => {
       // removePlayer(socket.id);
     });
