@@ -15,9 +15,8 @@ const routes: Routes = [
     component: DebugComponent,
   },
   {
-    path: 'welcome',
-    loadChildren: () =>
-      import('./welcome/welcome.module').then((m) => m.WelcomeModule),
+    path: 'host',
+    loadChildren: () => import('./host/host.module').then((m) => m.HostModule),
   },
   {
     path: 'main',

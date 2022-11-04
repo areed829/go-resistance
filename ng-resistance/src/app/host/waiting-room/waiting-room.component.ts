@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, map, Observable, take, tap } from 'rxjs';
+import { filter, map, take } from 'rxjs';
 import { GameStatus } from 'src/app/models/game-status';
 import { HostEvents } from 'src/app/models/host-events';
 import { WebSocketService } from 'src/app/web-socket.service';
