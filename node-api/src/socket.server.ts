@@ -4,6 +4,7 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { addHost, openUpGame, removeHost } from './host';
 import { HostEvents } from './host/host-events';
 import { playerConnected, playerListUpdated, removePlayer } from './player';
+import { PlayerEvents } from './player/player-events';
 
 export const setupSocketServer = (
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
@@ -41,9 +42,8 @@ export const setupSocketServer = (
         (a, b) =>
           a.length === b.length && a.every((value, index) => value === b[index])
       ),
-      tap((playerAdded) => console.log('playerAdded', playerAdded)),
-      tap((players) => playerServer.emit('playerListUpdated', players)),
-      tap((players) => hostServer.emit('playerListUpdated', players))
+      tap((players) => playerServer.emit(PlayerEvents.playerJoined, players)),
+      tap((players) => hostServer.emit(HostEvents.playerJoined, players))
     )
     .subscribe();
 
