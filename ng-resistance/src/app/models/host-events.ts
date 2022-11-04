@@ -4,4 +4,5 @@ export enum HostEvents {
   killGame = 'kill-game',
   rejoinGame = 'rejoin-game',
   gameOpened = 'game-opened',
+  playerJoined = 'player-joined',
 }

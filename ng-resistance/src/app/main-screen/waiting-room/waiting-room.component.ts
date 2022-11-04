@@ -11,7 +11,9 @@ import { HostService } from '../host.service';
   styleUrls: ['waiting-room.component.scss'],
 })
 export class WaitingRoomComponent implements OnInit {
-  players$: Observable<string> | undefined;
+  players$ = this.webSocketService
+    .getPlayerMessages()
+    .pipe(map(({ payload }) => payload as string[]));
 
   constructor(
     private webSocketService: WebSocketService,

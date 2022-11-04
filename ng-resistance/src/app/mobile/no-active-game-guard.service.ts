@@ -7,7 +7,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { GameStatus } from '../models/game-status';
 import { NODE_HOST } from '../api-url';
 
@@ -29,6 +29,7 @@ export class NoActiveGameGuardService implements CanActivate {
     return this.http
       .get<{ status: GameStatus }>(`${this.host}/game-status`)
       .pipe(
+        tap((status) => console.log('status', status)),
         map(({ status }) =>
           status === GameStatus.Open
             ? true
