@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NODE_HOST } from '../api-url';
-import { GameStatus } from '../models/game-status';
-import { WebSocketService } from '../web-socket.service';
-import { UserService } from '../user.service';
+import { NODE_HOST } from '@app/api-url';
+import { GameStatus } from '@app/models';
+import { UserService } from '@app/user.service';
+import { PlayerWebSocketService } from './player-web-socket.service';
 
 @Injectable()
 export class MobileService {
@@ -11,7 +11,7 @@ export class MobileService {
     @Inject(NODE_HOST) private host: string,
     private httpClient: HttpClient,
     private userService: UserService,
-    private webSocketService: WebSocketService,
+    private webSocketService: PlayerWebSocketService,
   ) {}
 
   getGameStatus() {

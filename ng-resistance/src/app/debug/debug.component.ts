@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { WebSocketService } from '../web-socket.service';
+import { Component } from '@angular/core';
 import { DebugService } from './debug.service';
 
 @Component({
@@ -22,13 +21,8 @@ import { DebugService } from './debug.service';
     </div>`,
   providers: [DebugService],
 })
-export class DebugComponent implements OnInit {
-  constructor(
-    private socketService: WebSocketService,
-    private debugService: DebugService,
-  ) {}
-
-  ngOnInit() {}
+export class DebugComponent {
+  constructor(private debugService: DebugService) {}
 
   getPlayers() {
     this.debugService.getPlayers().subscribe((data) => {

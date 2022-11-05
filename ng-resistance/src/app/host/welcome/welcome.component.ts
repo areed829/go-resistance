@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { HostEvents } from 'src/app/models/host-events';
-import { WebSocketService } from 'src/app/web-socket.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HostEvents } from '../host-events';
+import { HostWebSocketService } from '../host-web-socket.service';
 
 @Component({
   templateUrl: './welcome.component.html',
@@ -9,12 +9,15 @@ import { WebSocketService } from 'src/app/web-socket.service';
 })
 export class WelcomeComponent {
   constructor(
-    private webSocketService: WebSocketService,
+    private webSocketService: HostWebSocketService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   startGame() {
     this.webSocketService.sendHostMessage(HostEvents.openGame, '');
-    this.router.navigate(['./waiting-room']);
+    this.router.navigate(['../waiting-room'], {
+      relativeTo: this.route,
+    });
   }
 }

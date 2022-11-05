@@ -9,6 +9,7 @@ import { NoActiveGameComponent } from './no-active-game/no-active-game.component
 import { MobileService } from './mobile.service';
 import { WaitForGameComponent } from './wait-for-game/wait-for-game.component';
 import { SharedModule } from '../shared/shared.module';
+import { PlayerWebSocketService } from './player-web-socket.service';
 
 const routes: Routes = [
   { path: '', pathMatch: 'prefix', redirectTo: 'join' },
@@ -35,6 +36,6 @@ const routes: Routes = [
     SharedModule,
   ],
   declarations: [JoinComponent, NoActiveGameComponent, WaitForGameComponent],
-  providers: [NoActiveGameGuardService, MobileService],
+  providers: [NoActiveGameGuardService, MobileService, PlayerWebSocketService],
 })
 export class MobileModule {}

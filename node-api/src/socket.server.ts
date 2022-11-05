@@ -28,6 +28,7 @@ export const setupSocketServer = (
   };
 
   const playerServerOnConnection = (socket: Socket) => {
+    console.log('player connected');
     if (socket.handshake.headers.id) {
       playerConnected(socket, socket.handshake.headers.id as string);
     }

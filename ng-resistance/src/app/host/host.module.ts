@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HostService } from './host.service';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
+import { HostWebSocketService } from './host-web-socket.service';
+import { HostService } from './host.service';
 
 const routes: Routes = [
   {
@@ -24,6 +25,6 @@ const routes: Routes = [
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [WelcomeComponent, WaitingRoomComponent],
-  providers: [HostService],
+  providers: [HostWebSocketService, HostService],
 })
 export class HostModule {}

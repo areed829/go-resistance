@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, Observable, take, tap } from 'rxjs';
-import { GameStatus } from 'src/app/models/game-status';
-import { HostEvents } from 'src/app/models/host-events';
-import { WebSocketService } from 'src/app/web-socket.service';
+import { filter, take, tap } from 'rxjs';
+import { GameStatus } from '@app/models';
 import { MobileService } from '../mobile.service';
+import { PlayerWebSocketService } from '../player-web-socket.service';
 
 @Component({
   templateUrl: 'no-active-game.component.html',
 })
 export class NoActiveGameComponent implements OnInit {
   constructor(
-    private socketService: WebSocketService,
+    private socketService: PlayerWebSocketService,
     private resistanceService: MobileService,
     private route: Router,
   ) {}
 
   ngOnInit() {
-    this.socketService
-      .getHostMessages()
-      .pipe(
-        filter((message) => message.event === HostEvents.gameOpened),
-        take(1),
-        tap(() => this.route.navigate(['/mobile', 'join'])),
-      )
-      .subscribe();
+    // this.socketService
+    //   .getPlayerMessages()
+    //   .pipe(
+    //     filter((message) => message.event === HostEvents.gameOpened),
+    //     take(1),
+    //     tap(() => this.route.navigate(['/mobile', 'join'])),
+    //   )
+    //   .subscribe();
 
     this.resistanceService
       .getGameStatus()
