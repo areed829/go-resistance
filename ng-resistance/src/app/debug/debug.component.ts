@@ -3,8 +3,8 @@ import { WebSocketService } from '../web-socket.service';
 import { DebugService } from './debug.service';
 
 @Component({
-  template: ` <div class="flex">
-      <a [href]="['/welcome']" link-button>Host Start Game</a>
+  template: `<div class="flex">
+      <a [href]="['/host']" link-button>Host Start Game</a>
       <a [href]="['/mobile']" link-button>Player Join Game</a>
     </div>
     <div class="flex">

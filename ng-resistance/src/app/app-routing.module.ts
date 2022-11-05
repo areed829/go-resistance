@@ -19,13 +19,6 @@ const routes: Routes = [
     loadChildren: () => import('./host/host.module').then((m) => m.HostModule),
   },
   {
-    path: 'main',
-    loadChildren: () =>
-      import('./main-screen/main-screen.module').then(
-        (m) => m.MainScreenModule,
-      ),
-  },
-  {
     path: 'mobile',
     loadChildren: () =>
       import('./mobile/mobile.module').then((m) => m.MobileModule),

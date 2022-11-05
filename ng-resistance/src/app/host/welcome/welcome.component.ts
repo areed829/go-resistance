@@ -15,6 +15,6 @@ export class WelcomeComponent {
 
   startGame() {
     this.webSocketService.sendHostMessage(HostEvents.openGame, '');
-    this.router.navigate(['main', 'waiting-room']);
+    this.router.navigate(['./waiting-room']);
   }
 }

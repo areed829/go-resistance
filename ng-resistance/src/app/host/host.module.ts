@@ -23,7 +23,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(routes)],
-  declarations: [WelcomeComponent],
+  declarations: [WelcomeComponent, WaitingRoomComponent],
   providers: [HostService],
 })
 export class HostModule {}
