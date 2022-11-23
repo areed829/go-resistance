@@ -30,7 +30,7 @@ export class WaitingRoomComponent implements OnInit {
         filter(({ status }) => status !== GameStatus.Open),
       )
       .subscribe(() => {
-        this.route.navigate(['/welcome']);
+        this.route.navigate(['/host']);
       });
   }
 }

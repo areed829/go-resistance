@@ -9,11 +9,11 @@ import { KillGameService } from './kill-game.service';
 export class KillGameComponent implements OnInit {
   constructor(
     private killGameService: KillGameService,
-    private route: Router
+    private route: Router,
   ) {}
 
   ngOnInit() {
     this.killGameService.killGame().subscribe();
-    this.route.navigate(['/welcome']);
+    this.route.navigate(['/host']);
   }
 }

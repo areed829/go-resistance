@@ -6,7 +6,7 @@ import { UserService } from '@app/user.service';
 import { PlayerWebSocketService } from './player-web-socket.service';
 
 @Injectable()
-export class MobileService {
+export class PlayerService {
   constructor(
     @Inject(NODE_HOST) private host: string,
     private httpClient: HttpClient,

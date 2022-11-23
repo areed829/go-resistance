@@ -3,7 +3,7 @@ import { Server, Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { addHost, openUpGame, removeHost } from './host';
 import { HostEvents } from './host/host-events';
-import { playerConnected, playerListUpdated, removePlayer } from './player';
+import { playerConnected, playerListUpdated } from './player';
 import { PlayerEvents } from './player/player-events';
 
 export const setupSocketServer = (

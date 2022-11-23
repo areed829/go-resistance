@@ -7,7 +7,7 @@ import { KillGameComponent } from './kill-game/kill-game.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'mobile',
+    redirectTo: 'player',
     pathMatch: 'full',
   },
   {
@@ -19,9 +19,9 @@ const routes: Routes = [
     loadChildren: () => import('./host/host.module').then((m) => m.HostModule),
   },
   {
-    path: 'mobile',
+    path: 'player',
     loadChildren: () =>
-      import('./mobile/mobile.module').then((m) => m.MobileModule),
+      import('./player/player.module').then((m) => m.PlayerModule),
   },
   {
     path: 'kill',

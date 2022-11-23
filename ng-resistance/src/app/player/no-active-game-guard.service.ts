@@ -33,7 +33,7 @@ export class NoActiveGameGuardService implements CanActivate {
         map(({ status }) =>
           status === GameStatus.Open
             ? true
-            : this.router.parseUrl('/mobile/no-active-game'),
+            : this.router.parseUrl('/player/no-active-game'),
         ),
       );
   }

@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { JoinComponent } from './join/join.component';
 import { NoActiveGameGuardService } from './no-active-game-guard.service';
 import { NoActiveGameComponent } from './no-active-game/no-active-game.component';
-import { MobileService } from './mobile.service';
+import { PlayerService } from './player.service';
 import { WaitForGameComponent } from './wait-for-game/wait-for-game.component';
 import { SharedModule } from '../shared/shared.module';
 import { PlayerWebSocketService } from './player-web-socket.service';
@@ -36,6 +36,6 @@ const routes: Routes = [
     SharedModule,
   ],
   declarations: [JoinComponent, NoActiveGameComponent, WaitForGameComponent],
-  providers: [NoActiveGameGuardService, MobileService, PlayerWebSocketService],
+  providers: [NoActiveGameGuardService, PlayerService, PlayerWebSocketService],
 })
-export class MobileModule {}
+export class PlayerModule {}

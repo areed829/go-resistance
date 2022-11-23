@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, Subscription, tap } from 'rxjs';
-import { MobileService } from '../mobile.service';
+import { PlayerService } from '../player.service';
 
 @Component({
   templateUrl: 'join.component.html',
@@ -33,7 +33,7 @@ export class JoinComponent implements OnInit {
   subscription$ = new Subscription();
 
   constructor(
-    private mobileService: MobileService,
+    private playerService: PlayerService,
     private router: Router,
     private ref: ChangeDetectorRef,
   ) {}
@@ -41,11 +41,11 @@ export class JoinComponent implements OnInit {
   ngOnInit() {}
 
   join() {
-    this.mobileService
+    this.playerService
       .joinGame(this.form.value.name as string)
       .pipe(
         tap(() => {
-          this.router.navigate(['/mobile/wait-for-game']);
+          this.router.navigate(['/player/wait-for-game']);
         }),
         catchError((_) => {
           this.existingNames.push(
