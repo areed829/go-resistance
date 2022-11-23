@@ -1,16 +1,17 @@
-version: "3.9"
+version: '3.9'
 
 services:
   resistance:
+    container_name: resistance
     build:
-      context: ./resistance
+      context: ./ng-resistance
       dockerfile: ./Dockerfile
     ports:
       - 8081:80
 
   node-api:
     container_name: node_api
-    build: 
+    build:
       context: ./node-api
       dockerfile: ./Dockerfile
     ports:
