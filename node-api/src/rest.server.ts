@@ -73,6 +73,7 @@ export const setupRestServer = (app: express.Express) => {
       res.status(400).send({ error: 'player not found' });
       return;
     }
+    console.log('id', id, 'isFirst', isFirst);
     res.status(200).send(isFirst);
   });
 };

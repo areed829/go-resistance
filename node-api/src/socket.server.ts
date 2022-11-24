@@ -1,9 +1,14 @@
-import { distinctUntilChanged, tap } from 'rxjs';
+import { distinctUntilChanged, from, switchMap, take, tap } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
-import { addHost, openUpGame, removeHost } from './host';
+import { addHost, gameCanStart, openUpGame, removeHost } from './host';
 import { HostEvents } from './host/host-events';
-import { playerConnected, playerListUpdated } from './player';
+import {
+  getFirstPlayerSocketAsync,
+  getPlayersAsync,
+  playerConnected,
+  playerListUpdated,
+} from './player';
 import { PlayerEvents } from './player/player-events';
 
 export const setupSocketServer = (
@@ -13,7 +18,6 @@ export const setupSocketServer = (
   const hostServer = io.of('/host');
 
   const hostServerOnConnection = (socket: Socket) => {
-    console.log('host connected');
     socket.on('disconnect', () => {
       removeHost();
     });
@@ -29,13 +33,9 @@ export const setupSocketServer = (
   };
 
   const playerServerOnConnection = (socket: Socket) => {
-    console.log('player connected');
     if (socket.handshake.headers.id) {
       playerConnected(socket, socket.handshake.headers.id as string);
     }
-    socket.on('disconnect', () => {
-      // removePlayer(socket.id);
-    });
   };
 
   playerListUpdated()
@@ -46,6 +46,15 @@ export const setupSocketServer = (
       ),
       tap((players) => playerServer.emit(PlayerEvents.playerJoined, players)),
       tap((players) => hostServer.emit(HostEvents.playerJoined, players))
+    )
+    .subscribe();
+
+  gameCanStart()
+    .pipe(
+      take(1),
+      switchMap(() => from(getFirstPlayerSocketAsync())),
+      tap(() => hostServer.emit(HostEvents.gameCanStart)),
+      tap((socket) => socket?.emit(PlayerEvents.gameCanStart))
     )
     .subscribe();
 

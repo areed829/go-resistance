@@ -5,4 +5,5 @@ export enum HostEvents {
   rejoinGame = 'rejoin-game',
   gameOpened = 'game-opened',
   playerJoined = 'player-joined',
+  gameCanStart = 'game-can-start',
 }

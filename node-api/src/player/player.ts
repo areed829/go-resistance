@@ -42,11 +42,14 @@ export const getPlayersAsync = async () =>
     )
   );
 
+export const getFirstPlayerSocketAsync = async () =>
+  firstValueFrom(getFirstPlayer().pipe(map((player) => player?.socket)));
+
 export const isFirstPlayerAsync = async (
   id: string
 ): Promise<boolean | undefined> => {
   const firstPlayer = await firstValueFrom(getFirstPlayer());
-  return firstPlayer?.socket.id === id;
+  return firstPlayer?.id === id;
 };
 
 export const playerExists = async (id: string) => {

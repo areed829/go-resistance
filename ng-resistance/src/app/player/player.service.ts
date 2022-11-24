@@ -22,7 +22,7 @@ export class PlayerService {
 
   isFirstPlayer() {
     return this.httpClient.get<boolean>(
-      `${this.host}/is-first-player?id=${this.webSocketService.getPlayerId()}`,
+      `${this.host}/is-first-player?id=${this.userService.getUserId()}`,
     );
   }
 

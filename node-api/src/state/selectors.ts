@@ -1,4 +1,5 @@
-import { distinctUntilChanged, map } from 'rxjs';
+import { distinctUntilChanged, filter, map, shareReplay, take } from 'rxjs';
+import { Player } from '../models';
 import { getGameState } from './state';
 
 export const getPlayers = () =>
@@ -28,3 +29,16 @@ export const getGameStatus = () =>
   getGameState().pipe(map((state) => state.gameStatus));
 
 export const getHost = () => getGameState().pipe(map((state) => state.host));
+
+export const getGameCanStart = () =>
+  getGameState().pipe(
+    filter(
+      (state) =>
+        !!state.host && fiveOrMoreValidPlayers(Object.values(state.players))
+    ),
+    take(1),
+    shareReplay()
+  );
+
+const fiveOrMoreValidPlayers = (players: Player[]) =>
+  players.filter((player) => player.name).length >= 5;
