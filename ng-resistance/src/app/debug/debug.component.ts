@@ -3,8 +3,8 @@ import { DebugService } from './debug.service';
 
 @Component({
   template: `<div class="flex">
-      <a [href]="['/host']" link-button>Host Start Game</a>
-      <a [href]="['/player']" link-button>Player Join Game</a>
+      <a [href]="['/host']" target="_blank" link-button>Host Start Game</a>
+      <a [href]="['/player']" target="_blank" link-button>Player Join Game</a>
     </div>
     <div class="flex">
       <button (click)="getPlayers()" small-orange-button>Get Players</button>

@@ -13,6 +13,7 @@ export const setupSocketServer = (
   const hostServer = io.of('/host');
 
   const hostServerOnConnection = (socket: Socket) => {
+    console.log('host connected');
     socket.on('disconnect', () => {
       removeHost();
     });
