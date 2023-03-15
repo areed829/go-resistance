@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { filter, map, take } from 'rxjs';
+import { filter, map, merge, Observable, take } from 'rxjs';
 import { GameStatus } from '@app/models';
 import { HostWebSocketService } from '../host-web-socket.service';
 import { HostService } from '../host.service';
@@ -11,18 +11,24 @@ import { HostEvents } from '../host-events';
   styleUrls: ['waiting-room.component.scss'],
 })
 export class WaitingRoomComponent implements OnInit {
-  // players$ = this.webSocketService
-  //   .getPlayerMessages()
-  //   .pipe(map(({ payload }) => payload as string[]));
+  players$: Observable<string[]> = merge(
+    this.hostService
+      .getPlayers()
+      .pipe(map((players) => players.map((player) => player.name))),
+    this.hostSocket.getHostMessages().pipe(
+      filter((message) => message.event === HostEvents.playerJoined),
+      map((message) => message.payload as string[]),
+    ),
+  );
 
   constructor(
-    private webSocketService: HostWebSocketService,
+    private hostSocket: HostWebSocketService,
     private hostService: HostService,
     private route: Router,
   ) {}
 
   ngOnInit() {
-    this.webSocketService.sendHostMessage(HostEvents.rejoinGame, '');
+    this.hostSocket.sendHostMessage(HostEvents.rejoinGame, '');
     this.hostService
       .getGameStatus()
       .pipe(
